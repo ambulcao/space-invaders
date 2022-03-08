@@ -20,7 +20,7 @@ class Player {
             this.height = image.height * scale
             this.position = {
                 x: canvas.width / 2 - this.width / 2,
-                y: canvas.height - this.height
+                y: canvas.height - this.height - 20
             }
         }
     }
@@ -28,7 +28,7 @@ class Player {
     draw() {
         //c.fillStyle = 'red'
         //c.fillRect(this.position.x, this.position.y, this.width, this.height)
-        if (this.image)
+        
         c.drawImage(
             this.image, 
             this.position.x, 
@@ -37,16 +37,39 @@ class Player {
             this.height
         )
     }
+    
+    update(){
+        //if (this.image) {
+        this.draw()
+        this.position.x += this.velocity.x
+        //}
+    }
 }
 
+
 const player = new Player()
-player.draw()
+//player.draw()
 
 function animated() {
     requestAnimationFrame(animated)
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
-    player.draw()
+    player.update()
 }
 
 animated()
+
+addEventListener('keydown', ({key}) => {
+    switch (key) {
+        case 'a':
+            console.log('left')
+            //player.velocity.x = -5
+            break
+        case 'd':
+            console.log('right')
+            break
+        case ' ':
+            console.log('space')
+            break
+    }
+})

@@ -87,7 +87,7 @@ class Projectile {
 }
 
 class Invader {
-    constructor() {
+    constructor({position}) {
             this.velocity = {
             x: 0,
             y: 0
@@ -101,8 +101,8 @@ class Invader {
             this.width = image.width * scale
             this.height = image.height * scale
             this.position = {
-                x: canvas.width / 2 - this.width / 2,
-                y: canvas.height / 2
+                x: position.x,
+                y: position.y
             }
         }
     }
@@ -117,11 +117,11 @@ class Invader {
         )
     }
     
-    update(){
+    update({velocity}){
         if (this.image) {
         this.draw()
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
+        this.position.x += velocity.x
+        this.position.y += velocity.y
         }
     }
 }
@@ -134,14 +134,31 @@ class Grid {
         }
 
         this.velocity = {
-            x: 0,
+            x: 3,
             y: 0
         }
 
-        this.invaders = [new Invader()]
+        this.invaders = []
+
+        const columns = Math.floor(Math.random() * 10 + 5)
+        const rows = Math.floor(Math.random() * 5 + 2)
+        for (let x = 0; x < columns; x++) {
+            for (let y = 0; y < rows; y++) {
+            this.invaders.push(new Invader({
+                position: {
+                    x: x * 30,
+                    y: y * 30
+                }
+            }))
+            }
+        }
+        console.log(this.invaders)
     }
 
-    update() {}
+    update() {
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
+    }
 }
 
 const player = new Player()
@@ -180,7 +197,7 @@ function animated() {
     grids.forEach((grid) => {
         grid.update()
         grid.invaders.forEach((invader) => {
-            invader.update()
+            invader.update({velocity: grid.velocity})
         })
     })
 

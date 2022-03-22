@@ -150,7 +150,7 @@ class Invader {
     shoot(invaderProjectiles){
         invaderProjectiles.push(new InvaderProjectile({
             position: {
-                x: this.position.x + this.widht / 2,
+                x: this.position.x + this.width / 2,
                 y: this.position.y + this.height
             },
             velocity: {
@@ -255,7 +255,7 @@ function animated() {
 
          //spawn projectiles
         if (frames % 100 === 0 && grid.invaders.length > 0 ) {
-            grid.invaders[Math.floor(Math.random() * grid.invaders.lenghth)].shoot(
+            grid.invaders[Math.floor(Math.random() * grid.invaders.length)].shoot(
                 invaderProjectiles
             )
         }
@@ -286,9 +286,9 @@ function animated() {
                                 grid.invaders.splice(i, 1)
                                 projectiles.splice(j,1)
 
-                                if(grid.invaders.lenghth > 0) {
+                                if(grid.invaders.length > 0) {
                                     const firstInvader = grid.invaders[0]
-                                    const lastInvader = grid.invaders[grid.invaders.lenghth - 1]
+                                    const lastInvader = grid.invaders[grid.invaders.length - 1]
 
                                     grid.width = 
                                         lastInvader.position.x - 
@@ -296,7 +296,7 @@ function animated() {
                                         lastInvader.width
                                     grid.position.x = firstInvader.position.x
                                 } else {
-                                   // grids.splice(gridIndex, 1)
+                                   // grid.splice(gridIndex, 1)
                                    grids.splice(gridIndex, 1)
                                 }
                             }

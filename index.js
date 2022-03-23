@@ -87,6 +87,31 @@ class Projectile {
     }
 }
 
+class Particle {
+    constructor({position, velocity, radius, color}){
+        this.position = position
+        this.velocity = velocity
+
+        //shooting radius
+        this.radius = radius
+        this.color = color
+    }
+
+    draw() {
+        c.beginPath()
+        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
+        c.fillStyle = this.color
+        c.fill()
+        c.closePath()
+    }
+
+    update(){
+        this.draw()
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
+    }
+}
+
 class InvaderProjectile {
     constructor({position, velocity}){
         this.position = position
@@ -210,6 +235,7 @@ const player = new Player()
 const projectiles = []
 const grids = []
 const invaderProjectiles = []
+const particles = []
 
 const keys = {
     a: {
@@ -234,6 +260,9 @@ function animated() {
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
     player.update()
+    particles.forEach(particle => {
+        particle.update()
+    })
 
     invaderProjectiles.forEach((invaderProjectile, index) => {
         if(invaderProjectile.position.y + invaderProjectile.height >= canvas.height){
@@ -278,7 +307,7 @@ function animated() {
         grid.invaders.forEach((invader, i) => {
             invader.update({velocity: grid.velocity})
             
-            //shooting enemies
+            //projectiles hit enemy
             projectiles.forEach((projectile,j) => {
                 if(projectile.position.y - projectile.radius <= 
                         invader.position.y + invader.height && 
@@ -289,6 +318,21 @@ function animated() {
                     projectile.position.y +  projectile.radius >= 
                         invader.position.y
                     ) {
+                        for(let i = 0; i < 15; i++) {
+                            particles.push(new Particle({
+                                position: {
+                                    x: invader.position.x + invader.width / 2,
+                                    y: invader.position.y + invader.height / 2
+                                },
+                                velocity: {
+                                   x: 2,
+                                   y: 2
+                                },
+                                radius: 10,
+                                color: 'yellow'
+                            }))
+                        }
+
                         setTimeout(() => {
                             const invaderFound = grid.invaders.find(
                                 (invader2) => invader2 === invader 

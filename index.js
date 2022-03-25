@@ -299,7 +299,7 @@ function animated() {
     invaderProjectiles.forEach((invaderProjectile, index) => {
         if(invaderProjectile.position.y + invaderProjectile.height >= canvas.height){
             setTimeout(() => {
-                invaderProjectile.splice(index, 1)
+                invaderProjectiles.splice(index, 1)
             }, 0 )
         } else invaderProjectile.update()
         //projectile hits player
@@ -310,7 +310,7 @@ function animated() {
             player.width
         ) {
             setTimeout(() => {
-                invaderProjectile.splice(index, 1)
+                invaderProjectiles.splice(index, 1)
             }, 0 )
             console.log('you lose')
             createParticles({
@@ -368,7 +368,7 @@ function animated() {
                             //remove invader and projectile
                             if (invaderFound && projectileFound) {
                                 createParticles({
-                                    object: invader,
+                                    object: invader
                                 })
                                 grid.invaders.splice(i, 1)
                                 projectiles.splice(j,1)

@@ -268,7 +268,7 @@ for(let i = 0; i < 100; i++) {
         },
         velocity: {
         x: 0,
-        y: 1
+        y: 0.3
         },
         radius: Math.random() * 3,
         color: 'white'
@@ -305,6 +305,7 @@ function animated() {
 
         if(particle.position.y - particle.radius >= canvas.height) {
             particle.position.x = Math.random() * canvas.width
+            particle.position.y = -particle.radius
         }
 
         if(particle.opacity <= 0) {

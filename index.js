@@ -88,7 +88,7 @@ class Projectile {
 }
 
 class Particle {
-    constructor({position, velocity, radius, color}){
+    constructor({position, velocity, radius, color, fades}){
         this.position = position
         this.velocity = velocity
 
@@ -96,6 +96,7 @@ class Particle {
         this.radius = radius
         this.color = color
         this.opacity = 1
+        this.fades = fades
     }
 
     draw() {
@@ -114,7 +115,7 @@ class Particle {
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
         
-        this.opacity -= 0.01
+        if(this.fades) this.opacity -= 0.01
     }
 }
 
@@ -259,9 +260,24 @@ const keys = {
 let frames = 0
 let randomInterval = Math.floor(Math.random() * 500 + 500)
 
+for(let i = 0; i < 100; i++) {
+    particles.push(new Particle({
+        position: {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height
+        },
+        velocity: {
+        x: 0,
+        y: 1
+        },
+        radius: Math.random() * 3,
+        color: 'white'
+    }))
+}
+
 //console.log(randomInterval)
 
-function createParticles({object, color}) {
+function createParticles({object, color, fades}) {
     //explosion enemies
     for(let i = 0; i < 15; i++) {
         particles.push(new Particle({
@@ -274,7 +290,8 @@ function createParticles({object, color}) {
             y: (Math.random() - 0.5) * 2
             },
             radius: Math.random() * 3,
-            color: color || '#BAA0DE'
+            color: color || '#BAA0DE',
+            fades: true
         }))
     }
 }
@@ -285,6 +302,11 @@ function animated() {
     c.fillRect(0, 0, canvas.width, canvas.height)
     player.update()
     particles.forEach((particle) => {
+
+        if(particle.position.y - particle.radius >= canvas.height) {
+            particle.position.x = Math.random() * canvas.width
+        }
+
         if(particle.opacity <= 0) {
             setTimeout(() => {
                 particles.splice(i, 1)
@@ -315,7 +337,8 @@ function animated() {
             console.log('you lose')
             createParticles({
                 object: player,
-                color: 'orange'
+                color: 'orange',
+                fades: true
             })
         }
     })
@@ -368,7 +391,8 @@ function animated() {
                             //remove invader and projectile
                             if (invaderFound && projectileFound) {
                                 createParticles({
-                                    object: invader
+                                    object: invader,
+                                    fades: true
                                 })
                                 grid.invaders.splice(i, 1)
                                 projectiles.splice(j,1)

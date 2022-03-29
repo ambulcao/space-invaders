@@ -1,2 +1,3 @@
-# space-invaders
-Space Invaders in React JS
+# Space Invaders
+
+- Space Invaders in HTML CSS and JavaScript
